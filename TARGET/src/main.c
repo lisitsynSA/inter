@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "diag/Trace.h"
 
 #include "usbd_def.h"
