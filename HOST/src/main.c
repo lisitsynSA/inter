@@ -33,9 +33,37 @@ int main(int argc, char* argv[])
 	}
 
   	int head = 0;
-  	read(fd, &head, sizeof(head));
+  	int ReadLength = 0;
+  	int size = 0;
+
+  	TransmitBuffer[0]=1; //HID command send
+  	TransmitBuffer[5]=0; //End of byte
+
+  	ReadLength = read(fd, &head, sizeof(head));
+  	size += ReadLength;
 
   	printf("HEAD: %c %c %x %x\n\n", head, head >> 8, head >> 16 & 0b11111111, head >> 24 & 0b11111111);
+
+  	while (ReadLength > 0){
+  		*(int*) (TransmitBuffer + 1) = head;
+		//Всегда передаем 65 байт
+		if(rawhid_send(0, TransmitBuffer, 65, wait_timeout)==-1){
+			printf("HID device error\n");
+			return 0;
+		}
+
+		//Всегда принимаем 65 байт
+		ReceiveLength=rawhid_recv(0, ReceiveBuffer, 65, wait_timeout);
+		if(ReceiveLength==-1){
+			printf("HID device error\n");
+			return 0;
+		}
+
+		printf("RECV (%d): %s\nDATA %d\n", ReceiveLength, ReceiveBuffer, size);
+		ReadLength = read(fd, &head, sizeof(head));
+	  	size += ReadLength;
+	}
+
 
   	close(fd);
 
