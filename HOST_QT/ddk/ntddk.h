@@ -46,6 +46,20 @@
 #include <ntdef.h>
 #include <basetyps.h>
 
+/* BEGIN_C_DECLS should be used at the beginning of your declarations,
+   so that C++ compilers don't mangle their names.  Use END_C_DECLS at
+   the end of C declarations. */
+#undef _BEGIN_C_DECLS
+#undef _END_C_DECLS
+#ifdef __cplusplus
+# define _BEGIN_C_DECLS extern "C" {
+# define _END_C_DECLS }
+#else
+# define _BEGIN_C_DECLS /* empty */
+# define _END_C_DECLS /* empty */
+#endif
+
+_BEGIN_C_DECLS
 
 /* Base types, structures and definitions.
  */
@@ -93,5 +107,6 @@ typedef CONST char *PCSZ;
  */
 #include "winnt4.h"
 
+_END_C_DECLS
 
 #endif /* _DDK_NTDDK_H: $RCSfile: ntddk.h,v $: end of file */
