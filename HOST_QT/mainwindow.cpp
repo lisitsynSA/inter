@@ -27,11 +27,9 @@ void MainWindow::start_hid()
 
     if(hid_open()>0){
         qDebug() << "HID device is opened (VID=0x483, PID=0x5711)";
-        ui->statusLabel->setText(QString("Status: Connect"));
         enableSendInterface(true);
     }else{
         qDebug() << "HID device is not opened";
-        ui->statusLabel->setText(QString("Status: Disconnect"));
         enableSendInterface(false);
     }
     return;
@@ -96,4 +94,10 @@ void MainWindow::enableSendInterface(bool enable)
     ui->sendButton->setEnabled(enable);
     ui->recvButton->setEnabled(enable);
     ui->fileButton->setEnabled(enable);
+
+    if (enable)
+        ui->statusLabel->setText(QString("Status: Connect"));
+    else
+        ui->statusLabel->setText(QString("Status: Disconnect"));
+
 }
