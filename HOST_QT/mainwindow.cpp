@@ -1,8 +1,24 @@
 #include <QDebug>
+#include <QFileDialog>
+
+
+#include <stdio.h>
+#include <conio.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "hid.h"
+
+
+#define wait_timeout 300 //300
+unsigned char TransmitBuffer[65];
+unsigned char ReceiveBuffer[65];
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -37,18 +53,57 @@ void MainWindow::start_hid()
 
 void MainWindow::file_load()
 {
+    QString bcFile = QFileDialog::getOpenFileName(0, "Open Dialog", "", "*.bc");
+    int fd = open(bcFile.toStdString().data(), O_RDONLY);
+    if (fd > 0){
+        qDebug() << "FILE " << bcFile << " is opened";
+    }else{
+        qDebug() << "FILE " << bcFile << " is not opened";
+        return;
+    }
 
+    int head = 0;
+    int ReadLength = 0;
+    int ReceiveLength = 0;
+    int size = 0;
+
+    TransmitBuffer[0]=1; //HID command send
+    TransmitBuffer[5]=0; //End of byte
+
+    ReadLength = read(fd, &head, sizeof(head));
+    size += ReadLength;
+
+    qDebug() << "HEAD: " << (char) head << (char) (head >> 8) << ((head >> 16) & 0b11111111) << ((head >> 24) & 0b11111111);
+
+    while (ReadLength > 0){
+        *(int*) (TransmitBuffer + 1) = head;
+        //Всегда передаем 65 байт
+        if(rawhid_send(0, TransmitBuffer, 65, wait_timeout)==-1){
+            enableSendInterface(false);
+            qDebug() << "HID device error";
+            return;
+        }
+
+        //Всегда принимаем 65 байт
+        ReceiveLength=rawhid_recv(0, ReceiveBuffer, 65, wait_timeout);
+        if(ReceiveLength==-1){
+            enableSendInterface(false);
+            qDebug() << "HID device error";
+            return;
+        }
+
+        ReadLength = read(fd, &head, sizeof(head));
+        size += ReadLength;
+    }
+
+
+    //close(fd);
 }
 
 int MainWindow::hid_open()
 {
     return rawhid_open(1, 0x483, 0x5711, -1, -1);
 }
-
-
-#define wait_timeout 300 //300
-unsigned char TransmitBuffer[65];
-unsigned char ReceiveBuffer[65];
 
 void MainWindow::send_target()
 {
