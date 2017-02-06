@@ -108,7 +108,7 @@ static void free_all_hid(void)
 
 int rawhid_open(int max, int vid, int pid, int usage_page, int usage)
 {
-/*    GUID guid;
+    GUID guid;
     HDEVINFO info;
     DWORD index=0, reqd_size;
     SP_DEVICE_INTERFACE_DATA iface;
@@ -184,8 +184,7 @@ int rawhid_open(int max, int vid, int pid, int usage_page, int usage)
         count++;
         if (count >= max) return count;
     }
-    return count;*/
-    return 1;
+    return count;
 
 }
 
