@@ -20,6 +20,8 @@ protected:
 
 private slots:
     void start_hid();
+    void file_load();
+    void ask_target();
 
 private:
     Ui::MainWindow *ui;

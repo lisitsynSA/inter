@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->tryButton, SIGNAL(pressed()), this, SLOT(start_hid()));
+    connect(ui->fileButton, SIGNAL(pressed()), this, SLOT(file_load()));
+    connect(ui->askButton, SIGNAL(pressed()), this, SLOT(ask_target()));
+    setCentralWidget(ui->gridWidget);
 }
 
 MainWindow::~MainWindow()
@@ -29,4 +32,14 @@ void MainWindow::start_hid()
         return;
     }
     return;
+}
+
+void MainWindow::file_load()
+{
+
+}
+
+void MainWindow::ask_target()
+{
+
 }
