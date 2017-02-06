@@ -21,11 +21,13 @@ protected:
 private slots:
     void start_hid();
     void file_load();
-    void ask_target();
+    void send_target();
+    void recv_target();
 
 private:
     Ui::MainWindow *ui;
     int hid_open();
+    void enableSendInterface(bool enable);
 };
 
 #endif // MAINWINDOW_H

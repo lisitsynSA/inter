@@ -107,6 +107,7 @@ HEADERS  += mainwindow.h \
     ddk/ws2san.h \
     ddk/xfilter.h \
     ddk/ntddk.h \
-    ddk/winddk.h
+    ddk/winddk.h \
+    hid.h
 
 FORMS    += mainwindow.ui

@@ -6616,8 +6616,6 @@ KeInsertQueueDpc(
 NTOSAPI VOID DDKAPI
 KeLeaveCriticalRegion( VOID );
 
-static FORCEINLINE
-void KeMemoryBarrier (void) { MemoryBarrier(); }
 
 NTOSAPI NTSTATUS DDKAPI
 KePulseEvent(
