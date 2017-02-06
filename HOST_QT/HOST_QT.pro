@@ -24,7 +24,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    hid.cpp
 
 HEADERS  += mainwindow.h \
     ddk/atm.h \

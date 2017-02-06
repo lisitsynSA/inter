@@ -56,80 +56,7 @@
 #define DEVICE_TYPE_FROM_CTL_CODE(C)	(((ULONG)((C) & (0xFFFF0000)) >> 16)
 
 typedef ULONG DEVICE_TYPE;
-enum
-{ FILE_DEVICE_BEEP			= 0x00000001UL,
-  FILE_DEVICE_CD_ROM			= 0x00000002UL,
-  FILE_DEVICE_CD_ROM_FILE_SYSTEM	= 0x00000003UL,
-  FILE_DEVICE_CONTROLLER		= 0x00000004UL,
-  FILE_DEVICE_DATALINK			= 0x00000005UL,
-  FILE_DEVICE_DFS			= 0x00000006UL,
-  FILE_DEVICE_DISK			= 0x00000007UL,
-  FILE_DEVICE_DISK_FILE_SYSTEM		= 0x00000008UL,
-  FILE_DEVICE_FILE_SYSTEM		= 0x00000009UL,
-  FILE_DEVICE_INPORT_PORT		= 0x0000000AUL,
-  FILE_DEVICE_KEYBOARD			= 0x0000000BUL,
-  FILE_DEVICE_MAILSLOT			= 0x0000000CUL,
-  FILE_DEVICE_MIDI_IN			= 0x0000000DUL,
-  FILE_DEVICE_MIDI_OUT			= 0x0000000EUL,
-  FILE_DEVICE_MOUSE			= 0x0000000FUL,
-  FILE_DEVICE_MULTI_UNC_PROVIDER	= 0x00000010UL,
-  FILE_DEVICE_NAMED_PIPE		= 0x00000011UL,
-  FILE_DEVICE_NETWORK			= 0x00000012UL,
-  FILE_DEVICE_NETWORK_BROWSER		= 0x00000013UL,
-  FILE_DEVICE_NETWORK_FILE_SYSTEM	= 0x00000014UL,
-  FILE_DEVICE_NULL			= 0x00000015UL,
-  FILE_DEVICE_PARALLEL_PORT		= 0x00000016UL,
-  FILE_DEVICE_PHYSICAL_NETCARD		= 0x00000017UL,
-  FILE_DEVICE_PRINTER			= 0x00000018UL,
-  FILE_DEVICE_SCANNER			= 0x00000019UL,
-  FILE_DEVICE_SERIAL_MOUSE_PORT 	= 0x0000001AUL,
-  FILE_DEVICE_SERIAL_PORT		= 0x0000001BUL,
-  FILE_DEVICE_SCREEN			= 0x0000001CUL,
-  FILE_DEVICE_SOUND			= 0x0000001DUL,
-  FILE_DEVICE_STREAMS			= 0x0000001EUL,
-  FILE_DEVICE_TAPE			= 0x0000001FUL,
-  FILE_DEVICE_TAPE_FILE_SYSTEM		= 0x00000020UL,
-  FILE_DEVICE_TRANSPORT 		= 0x00000021UL,
-  FILE_DEVICE_UNKNOWN			= 0x00000022UL,
-  FILE_DEVICE_VIDEO			= 0x00000023UL,
-  FILE_DEVICE_VIRTUAL_DISK		= 0x00000024UL,
-  FILE_DEVICE_WAVE_IN			= 0x00000025UL,
-  FILE_DEVICE_WAVE_OUT			= 0x00000026UL,
-  FILE_DEVICE_8042_PORT			= 0x00000027UL,
-  FILE_DEVICE_NETWORK_REDIRECTOR	= 0x00000028UL,
-  FILE_DEVICE_BATTERY			= 0x00000029UL,
-  FILE_DEVICE_BUS_EXTENDER		= 0x0000002AUL,
-  FILE_DEVICE_MODEM			= 0x0000002BUL,
-  FILE_DEVICE_VDM			= 0x0000002CUL,
-  FILE_DEVICE_MASS_STORAGE		= 0x0000002DUL,
-  FILE_DEVICE_SMB			= 0x0000002EUL,
-  FILE_DEVICE_KS			= 0x0000002FUL,
-  FILE_DEVICE_CHANGER			= 0x00000030UL,
-  FILE_DEVICE_SMARTCARD 		= 0x00000031UL,
-  FILE_DEVICE_ACPI			= 0x00000032UL,
-  FILE_DEVICE_DVD			= 0x00000033UL,
-  FILE_DEVICE_FULLSCREEN_VIDEO		= 0x00000034UL,
-  FILE_DEVICE_DFS_FILE_SYSTEM		= 0x00000035UL,
-  FILE_DEVICE_DFS_VOLUME		= 0x00000036UL,
-  FILE_DEVICE_SERENUM			= 0x00000037UL,
-  FILE_DEVICE_TERMSRV			= 0x00000038UL,
-  FILE_DEVICE_KSEC			= 0x00000039UL,
-  FILE_DEVICE_FIPS			= 0x0000003AUL
-};
 
-enum
-{ FILE_ANY_ACCESS			= 0x00000000UL,
-  FILE_SPECIAL_ACCESS			= FILE_ANY_ACCESS,
-  FILE_READ_ACCESS			= 0x00000001UL,
-  FILE_WRITE_ACCESS			= 0x00000002UL
-};
-
-enum
-{ METHOD_BUFFERED			= 0,
-  METHOD_IN_DIRECT			= 1,
-  METHOD_OUT_DIRECT			= 2,
-  METHOD_NEITHER			= 3
-};
 
 /* Some derived convenience macros; Microsoft do not specify these,
  * but they help to keep the CTL_CODE specifications tidy.
@@ -139,60 +66,7 @@ enum
 #define __FILE_RD_BUFFERED(F,OP)	F(OP, METHOD_BUFFERED, FILE_READ_ACCESS)
 #define __FILE_RW_BUFFERED(F,OP)	F(OP, METHOD_BUFFERED, __FILE_RW_ACCESS)
 
-typedef
-struct _DRIVE_LAYOUT_INFORMATION_MBR
-/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff552668(v=vs.85).aspx */
-{ ULONG 	 Signature;
-} DRIVE_LAYOUT_INFORMATION_MBR, *PDRIVE_LAYOUT_INFORMATION_MBR;
 
-typedef
-struct _DRIVE_LAYOUT_INFORMATION_GPT
-/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff552664(v=vs.85).aspx */
-{ GUID		 DiskId;
-  LARGE_INTEGER  StartingUsableOffset;
-  LARGE_INTEGER  UsableLength;
-  ULONG		 MaxPartitionCount;
-} DRIVE_LAYOUT_INFORMATION_GPT, *PDRIVE_LAYOUT_INFORMATION_GPT;
-
-typedef
-struct _PARTITION_INFORMATION_MBR
-/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff563767(v=vs.85).aspx */
-{ UCHAR 	PartitionType;
-  BOOLEAN	BootIndicator;
-  BOOLEAN	RecognizedPartition;
-  ULONG 	HiddenSectors;
-} PARTITION_INFORMATION_MBR, *PPARTITION_INFORMATION_MBR;
-
-typedef
-enum _PARTITION_STYLE
-/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff563773(v=vs.85).aspx */
-{ PARTITION_STYLE_MBR		= 0,
-  PARTITION_STYLE_GPT		= 1,
-  PARTITION_STYLE_RAW		= 2
-} PARTITION_STYLE;
-
-typedef
-struct _CREATE_DISK_MBR
-/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff552490(v=vs.85).aspx */
-{ ULONG 	Signature;
-} CREATE_DISK_MBR, *PCREATE_DISK_MBR;
-
-typedef
-struct _CREATE_DISK_GPT
-/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff552486(v=vs.85).aspx */
-{ GUID		DiskId;
-  ULONG 	MaxPartitionCount;
-} CREATE_DISK_GPT, *PCREATE_DISK_GPT;
-
-typedef
-struct _CREATE_DISK
-/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff552490(v=vs.85).aspx */
-{ PARTITION_STYLE	  PartitionStyle;
-  _ANONYMOUS_UNION union
-  { CREATE_DISK_MBR	  Mbr;
-    CREATE_DISK_GPT	  Gpt;
-  } DUMMYUNIONNAME;
-} CREATE_DISK, *PCREATE_DISK;
 
 /* End of _DDK_WINDDK_H and _WINIOCTL_H common declarations.
  */
@@ -275,7 +149,6 @@ DECLARE_INTERNAL_OBJECT(SECTION_OBJECT)
 /* FIXME: Unknown definitions
  */
 struct _SET_PARTITION_INFORMATION_EX;
-typedef ULONG WAIT_TYPE;
 typedef HANDLE TRACEHANDLE;
 typedef PVOID PWMILIB_CONTEXT;
 typedef PVOID PSYSCTL_IRP_DISPOSITION;
@@ -1141,11 +1014,7 @@ struct _KMUTANT
   UCHAR 			ApcDisable;
 } KMUTANT, *PKMUTANT, *RESTRICTED_POINTER PRKMUTANT, KMUTEX, *PKMUTEX, *RESTRICTED_POINTER PRKMUTEX;
 
-typedef
-enum _TIMER_TYPE
-{ NotificationTimer,
-  SynchronizationTimer
-} TIMER_TYPE;
+
 
 typedef
 enum _TIMER_INFORMATION_CLASS
@@ -1635,16 +1504,6 @@ struct _CM_MCA_POS_DATA
   UCHAR 			PosData4;
 } CM_MCA_POS_DATA, *PCM_MCA_POS_DATA;
 
-typedef
-struct CM_Power_Data_s
-{ ULONG 			PD_Size;
-  DEVICE_POWER_STATE		PD_MostRecentPowerState;
-  ULONG 			PD_Capabilities;
-  ULONG 			PD_D1Latency;
-  ULONG 			PD_D2Latency;
-  ULONG 			PD_D3Latency;
-  DEVICE_POWER_STATE		PD_PowerStateMapping[PowerSystemMaximum];
-} CM_POWER_DATA, *PCM_POWER_DATA;
 
 #define PDCAP_D0_SUPPORTED                0x00000001
 #define PDCAP_D1_SUPPORTED                0x00000002
@@ -3170,30 +3029,6 @@ enum _EX_POOL_PRIORITY
  */
 #define PRIVILEGE_SET_ALL_NECESSARY		   1
 
-typedef
-struct _RTL_OSVERSIONINFOW
-{ ULONG 			dwOSVersionInfoSize;
-  ULONG 			dwMajorVersion;
-  ULONG 			dwMinorVersion;
-  ULONG 			dwBuildNumber;
-  ULONG 			dwPlatformId;
-  WCHAR 			szCSDVersion[128];
-} RTL_OSVERSIONINFOW, *PRTL_OSVERSIONINFOW;
-
-typedef
-struct _RTL_OSVERSIONINFOEXW
-{ ULONG 			dwOSVersionInfoSize;
-  ULONG 			dwMajorVersion;
-  ULONG 			dwMinorVersion;
-  ULONG 			dwBuildNumber;
-  ULONG 			dwPlatformId;
-  WCHAR 			szCSDVersion[128];
-  USHORT			wServicePackMajor;
-  USHORT			wServicePackMinor;
-  USHORT			wSuiteMask;
-  UCHAR 			wProductType;
-  UCHAR 			wReserved;
-} RTL_OSVERSIONINFOEXW, *PRTL_OSVERSIONINFOEXW;
 
 NTOSAPI ULONGLONG DDKAPI
 VerSetConditionMask(
@@ -3353,11 +3188,6 @@ typedef VOID DDKAPI
   /*IN*/ PVOID  Argument2
 );
 
-typedef
-enum _EVENT_TYPE
-{ NotificationEvent,
-  SynchronizationEvent
-} EVENT_TYPE;
 
 typedef
 enum _KWAIT_REASON
@@ -4068,30 +3898,7 @@ KeGetCurrentIrql( VOID );
 #if !defined(__INTERLOCKED_DECLARED)
 #define __INTERLOCKED_DECLARED
 
-NTOSAPI LONG DDKFASTAPI
-InterlockedIncrement( /*IN*/ LONG VOLATILE *Addend );
 
-NTOSAPI LONG DDKFASTAPI
-InterlockedDecrement( /*IN*/ LONG VOLATILE *Addend );
-
-NTOSAPI LONG DDKFASTAPI
-InterlockedCompareExchange(
-  /*IN OUT*/ PLONG  VOLATILE  Destination,
-  /*IN*/ LONG  Exchange,
-  /*IN*/ LONG  Comparand
-);
-
-NTOSAPI LONG DDKFASTAPI
-InterlockedExchange(
-  /*IN OUT*/ PLONG  VOLATILE  Target,
-  /*IN*/ LONG Value
-);
-
-NTOSAPI LONG DDKFASTAPI
-InterlockedExchangeAdd(
-  /*IN OUT*/ PLONG VOLATILE  Addend,
-  /*IN*/ LONG  Value
-);
 
 /* PVOID
  * InterlockedExchangePointer(
@@ -4110,16 +3917,7 @@ InterlockedExchangeAdd(
 #define InterlockedCompareExchangePointer(Destination, Exchange, Comparand) \
  ((PVOID) InterlockedCompareExchange((PLONG) Destination, (LONG) Exchange, (LONG) Comparand))
 
-#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
-PSLIST_ENTRY DDKFASTAPI
-InterlockedPopEntrySList( /*IN*/ PSLIST_HEADER ListHead );
 
-NTOSAPI PSLIST_ENTRY DDKFASTAPI
-InterlockedPushEntrySList(
-  /*IN*/ PSLIST_HEADER  ListHead,
-  /*IN*/ PSLIST_ENTRY  ListEntry
-);
-#endif /* _WIN32_WINNT >= _WIN32_WINNT_WINXP */
 
 #endif /* !__INTERLOCKED_DECLARED */
 #endif /*  __USE_NTOSKRNL__ */
@@ -7819,34 +7617,6 @@ NtMakeTemporaryObject( /*IN*/ HANDLE Handle );
 
 NTOSAPI NTSTATUS DDKAPI
 ZwMakeTemporaryObject( /*IN*/ HANDLE Handle );
-
-NTOSAPI NTSTATUS DDKAPI
-NtMapViewOfSection(
-  /*IN*/ HANDLE  SectionHandle,
-  /*IN*/ HANDLE  ProcessHandle,
-  /*IN OUT*/ PVOID  *BaseAddress,
-  /*IN*/ ULONG  ZeroBits,
-  /*IN*/ ULONG  CommitSize,
-  /*IN OUT*/ PLARGE_INTEGER  SectionOffset  /*OPTIONAL*/,
-  /*IN OUT*/ PSIZE_T  ViewSize,
-  /*IN*/ SECTION_INHERIT  InheritDisposition,
-  /*IN*/ ULONG  AllocationType,
-  /*IN*/ ULONG  Protect
-);
-
-NTOSAPI NTSTATUS DDKAPI
-ZwMapViewOfSection(
-  /*IN*/ HANDLE  SectionHandle,
-  /*IN*/ HANDLE  ProcessHandle,
-  /*IN OUT*/ PVOID  *BaseAddress,
-  /*IN*/ ULONG  ZeroBits,
-  /*IN*/ ULONG  CommitSize,
-  /*IN OUT*/ PLARGE_INTEGER  SectionOffset  /*OPTIONAL*/,
-  /*IN OUT*/ PSIZE_T  ViewSize,
-  /*IN*/ SECTION_INHERIT  InheritDisposition,
-  /*IN*/ ULONG  AllocationType,
-  /*IN*/ ULONG  Protect
-);
 
 NTOSAPI NTSTATUS DDKAPI
 NtOpenFile(

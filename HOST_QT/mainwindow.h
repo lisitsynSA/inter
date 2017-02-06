@@ -24,7 +24,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     int hid_open();
-    int rawhid_open(int max, int vid, int pid, int usage_page, int usage);
 };
 
 #endif // MAINWINDOW_H
