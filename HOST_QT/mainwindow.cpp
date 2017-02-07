@@ -96,6 +96,8 @@ void MainWindow::file_load()
         size += ReadLength;
     }
 
+    ui->fileLabel->setText(bcFile);
+
 
     //close(fd);
 }
@@ -152,7 +154,8 @@ void MainWindow::enableSendInterface(bool enable)
 
     if (enable)
         ui->statusLabel->setText(QString("Status: Connect"));
-    else
+    else {
         ui->statusLabel->setText(QString("Status: Disconnect"));
-
+        ui->fileLabel->setText(QString(""));
+    }
 }

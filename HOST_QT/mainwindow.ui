@@ -17,53 +17,57 @@
    <widget class="QWidget" name="gridWidget" native="true">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>40</y>
-      <width>216</width>
-      <height>141</height>
+      <x>0</x>
+      <y>0</y>
+      <width>275</width>
+      <height>193</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="3" column="0">
-      <widget class="QPushButton" name="recvButton">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
+     <item row="2" column="1">
+      <widget class="QLabel" name="fileLabel">
        <property name="text">
-        <string>Recive</string>
+        <string/>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="statusLabel">
-       <property name="text">
-        <string>Status: Disconnect</string>
+     <item row="4" column="2">
+      <widget class="QLCDNumber" name="recvNumber">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="digitCount">
+        <number>2</number>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="recvLineEdit">
+      <widget class="QLineEdit" name="sendLineEdit">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="tryButton">
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
+     <item row="1" column="1">
+      <widget class="QProgressBar" name="progressBar">
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="sendButton">
+       <property name="enabled">
+        <bool>false</bool>
        </property>
        <property name="text">
-        <string>Try</string>
-       </property>
-       <property name="checkable">
-        <bool>false</bool>
+        <string>Send</string>
        </property>
       </widget>
      </item>
@@ -83,42 +87,61 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="sendButton">
-       <property name="enabled">
-        <bool>false</bool>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="tryButton">
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
        </property>
        <property name="text">
-        <string>Send</string>
+        <string>Try</string>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QProgressBar" name="progressBar">
-       <property name="value">
-        <number>0</number>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="sendLineEdit">
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="recvLineEdit">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="readOnly">
-        <bool>false</bool>
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="statusLabel">
+       <property name="text">
+        <string>Status: Disconnect</string>
        </property>
       </widget>
      </item>
      <item row="4" column="0">
-      <widget class="QLCDNumber" name="recvNumber">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>50</height>
-        </size>
+      <widget class="QPushButton" name="recvButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Recive</string>
        </property>
       </widget>
+     </item>
+     <item row="5" column="1">
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </widget>
