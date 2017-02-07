@@ -20,6 +20,7 @@ protected:
 
 private slots:
     void start_hid();
+    void stop_hid();
     void file_load();
     void send_target();
     void recv_target();

@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->tryButton, SIGNAL(pressed()), this, SLOT(start_hid()));
+    connect(ui->connectButton, SIGNAL(pressed()), this, SLOT(start_hid()));
+    connect(ui->disconnectButton, SIGNAL(pressed()), this, SLOT(stop_hid()));
     connect(ui->fileButton, SIGNAL(pressed()), this, SLOT(file_load()));
     connect(ui->sendButton, SIGNAL(pressed()), this, SLOT(send_target()));
     connect(ui->recvButton, SIGNAL(pressed()), this, SLOT(recv_target()));
@@ -49,6 +50,14 @@ void MainWindow::start_hid()
         enableSendInterface(false);
     }
     return;
+}
+
+void MainWindow::stop_hid()
+{
+    qDebug() << "STOP HID CONNECTION";
+
+    rawhid_close(0);
+    enableSendInterface(false);
 }
 
 void MainWindow::file_load()
@@ -151,6 +160,7 @@ void MainWindow::enableSendInterface(bool enable)
     ui->sendButton->setEnabled(enable);
     ui->recvButton->setEnabled(enable);
     ui->fileButton->setEnabled(enable);
+    ui->disconnectButton->setEnabled(enable);
 
     if (enable)
         ui->statusLabel->setText(QString("Status: Connect"));
