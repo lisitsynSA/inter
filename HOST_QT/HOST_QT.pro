@@ -108,6 +108,7 @@ HEADERS  += mainwindow.h \
     ddk/xfilter.h \
     ddk/ntddk.h \
     ddk/winddk.h \
-    hid.h
+    hid.h \
+    hid_code.h
 
 FORMS    += mainwindow.ui
