@@ -10,15 +10,14 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#define wait_timeout 300 //300
+unsigned char TransmitBuffer[65];
+unsigned char ReceiveBuffer[65];
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "hid.h"
 
-
-#define wait_timeout 300 //300
-unsigned char TransmitBuffer[65];
-unsigned char ReceiveBuffer[65];
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -118,12 +117,26 @@ int MainWindow::hid_open()
 
 void MainWindow::send_target()
 {
+    Send(ECHO, ui->sendLineEdit->text().toStdString().length(),\
+         ui->sendLineEdit->text().toStdString().data());
+}
+
+void MainWindow::Send(enum MSG_CODE code, char size, const char* msg)
+{
     TransmitBuffer[0] = 1; //HID command send
+    TransmitBuffer[1] = code;
 
-    //strcpy((char *)TransmitBuffer+1,"Hello World");
+    switch (code) {
+    case ECHO:
+    case FILENAME:
+    case FILEDATA:
+    case IO:
+        memcpy(TransmitBuffer+2, msg, size);
+        break;
+    default:
+        break;
+    }
 
-    //scanf("%s", TransmitBuffer+1);
-    strcpy((char *)TransmitBuffer+1, ui->sendLineEdit->text().toStdString().data());
     //Всегда передаем 65 байт
     if(rawhid_send(0, TransmitBuffer, 65, wait_timeout)==-1){
         enableSendInterface(false);
@@ -131,7 +144,7 @@ void MainWindow::send_target()
         return;
     }
 
-    qDebug() << "SEND : " << (char*)(TransmitBuffer + 1);
+    qDebug() << "SEND : " << (char*)(TransmitBuffer + 2);
 }
 
 void MainWindow::recv_target()

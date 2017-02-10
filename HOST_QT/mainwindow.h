@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "hid_code.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +30,7 @@ private:
     Ui::MainWindow *ui;
     int hid_open();
     void enableSendInterface(bool enable);
+    void Send(enum MSG_CODE code, char size, const char* msg);
 };
 
 #endif // MAINWINDOW_H
