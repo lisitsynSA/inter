@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <QDateTime>
 
 #define wait_timeout 300 //300
 unsigned char TransmitBuffer[65];
@@ -29,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->fileButton, SIGNAL(pressed()), this, SLOT(file_load()));
     connect(ui->sendButton, SIGNAL(pressed()), this, SLOT(send_target()));
     connect(ui->recvButton, SIGNAL(pressed()), this, SLOT(recv_target()));
+    connect(ui->pingButton, SIGNAL(pressed()), this, SLOT(ping()));
     setCentralWidget(ui->gridWidget);
 }
 
@@ -173,6 +175,23 @@ void MainWindow::recv_target()
     }
 }
 
+void MainWindow::ping()
+{
+    QDateTime start = QDateTime::currentDateTime();
+
+    Send(PING);
+    recv_target();
+
+    QDateTime finish = QDateTime::currentDateTime();
+
+    qDebug() << "START" << start << " FINISH" << finish;
+
+    int secs = start.secsTo(finish);
+    start.addSecs(secs);
+    int msecs = start.time().msecsTo(finish.time());
+    ui->pingNumber->display(secs * 1000 + msecs);
+}
+
 
 void MainWindow::enableSendInterface(bool enable)
 {
@@ -180,6 +199,7 @@ void MainWindow::enableSendInterface(bool enable)
     ui->recvButton->setEnabled(enable);
     ui->fileButton->setEnabled(enable);
     ui->disconnectButton->setEnabled(enable);
+    ui->pingButton->setEnabled(enable);
 
     if (enable)
         ui->statusLabel->setText(QString("Status: Connect"));

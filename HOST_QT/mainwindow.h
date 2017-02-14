@@ -25,12 +25,13 @@ private slots:
     void file_load();
     void send_target();
     void recv_target();
+    void ping();
 
 private:
     Ui::MainWindow *ui;
     int hid_open();
     void enableSendInterface(bool enable);
-    void Send(enum MSG_CODE code, char size, const char* msg);
+    void Send(enum MSG_CODE code, char size = 0, const char* msg = NULL);
 };
 
 #endif // MAINWINDOW_H
