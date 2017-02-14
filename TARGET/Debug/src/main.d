@@ -74,7 +74,8 @@ src/main.o: ../src/main.c ../system/include/diag/Trace.h \
  ../system/include/usb/usbd_ioreq.h ../system/include/usb/usbd_def.h \
  ../system/include/usb/usbd_core.h ../system/include/usb/usbd_ctlreq.h \
  ../include/Timer.h ../system/include/cmsis/cmsis_device.h \
- ../system/include/cmsis/stm32f4xx.h ../include/BlinkLed.h
+ ../system/include/cmsis/stm32f4xx.h ../include/BlinkLed.h \
+ ../include/hid_code.h
 
 ../system/include/diag/Trace.h:
 
@@ -241,3 +242,5 @@ src/main.o: ../src/main.c ../system/include/diag/Trace.h \
 ../system/include/cmsis/stm32f4xx.h:
 
 ../include/BlinkLed.h:
+
+../include/hid_code.h:

@@ -125,13 +125,14 @@ void MainWindow::Send(enum MSG_CODE code, char size, const char* msg)
 {
     TransmitBuffer[0] = 1; //HID command send
     TransmitBuffer[1] = code;
+    TransmitBuffer[2] = size;
 
     switch (code) {
     case ECHO:
     case FILENAME:
     case FILEDATA:
     case IO:
-        memcpy(TransmitBuffer+2, msg, size);
+        memcpy(TransmitBuffer+4, msg, size);
         break;
     default:
         break;
@@ -144,7 +145,9 @@ void MainWindow::Send(enum MSG_CODE code, char size, const char* msg)
         return;
     }
 
-    qDebug() << "SEND : " << (char*)(TransmitBuffer + 2);
+    qDebug() << "SEND (code" << TransmitBuffer[1] <<\
+                "size" << TransmitBuffer[2] <<\
+                "):" << (char*)(TransmitBuffer + 4);
 }
 
 void MainWindow::recv_target()
@@ -157,8 +160,11 @@ void MainWindow::recv_target()
         return;
     }
 
-    qDebug() << "RECV (" << ReceiveLength << "): " << (char*)ReceiveBuffer;
-    ui->recvLineEdit->setText(QString((char*)ReceiveBuffer));
+    qDebug() << "RECV (pkg" << ReceiveLength << \
+                "code" << ReceiveBuffer[0] <<\
+                "size" << ReceiveBuffer[1] <<\
+                "): " << (char*)ReceiveBuffer+3;
+    ui->recvLineEdit->setText(QString((char*)ReceiveBuffer+3));
     ui->recvNumber->display(ReceiveLength);
 
     if (ReceiveLength == 0)

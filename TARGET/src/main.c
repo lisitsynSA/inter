@@ -16,6 +16,7 @@
 #include "usbd_customhid.h"
 #include "Timer.h"
 #include "BlinkLed.h"
+#include "hid_code.h"
 
 #define DATA_SIZE 1024
 
@@ -103,37 +104,44 @@ void CommandProcess(USBD_HandleTypeDef *pdev, uint8_t *inbuf)
 {
 
 	int len;
-	char s[65] = {};
+	char s[65] = {'c','a','m', ' '};
 	//itoa(counter,s,10);
 
 
-	trace_printf("RECV: %s\nDATA %d\n", inbuf+1, recieveData.Pointer);
-	AddData(inbuf);
-
-
-
-	//InData [1][Data max 64 bytes]
-	len=strlen((char *)inbuf+1);
-	inbuf[len+1]=' ';
-	strcpy((char *)inbuf+len+2,s);
-	strcpy(s, (char*)inbuf+1);
-	inbuf[1]='c';
-	inbuf[2]='a';
-	inbuf[3]='m';
-	inbuf[4]='_';
-	strcpy((char *)inbuf+5, (char*)s);
-
-
-	//Response [2][Data max 64 bytes]
+	//AddData(inbuf);
 	inbuf[0]=2; //report to PC (remove on PC side by driver)
-	blink_led_on();
+	char code = inbuf[1];
+	char size = inbuf[2];
+	trace_printf("RECV: (code %d, size %d) %s\nDATA %d\n", code, size, inbuf+4);
+
+	switch (code) {
+	    case ECHO:
+			memcpy(s+4, inbuf+4, size);
+			size += 4;
+			inbuf[2] = size;
+			memcpy(inbuf+4, s, size);
+		case PING:
+			USBD_CUSTOM_HID_SendReport(pdev, inbuf, 65);
+			trace_printf("SEND: (code %d, size %d) %s\nDATA %d\n", code, size, inbuf+4);
+	    	break;
+		case STATUS:
+		case RUN:
+	    case FILENAME:
+	    case FILEDATA:
+	    case IO:
+	        break;
+	    default:
+	        break;
+	    }
+	//InData [1][Data max 64 bytes]
+	//Response [2][Data max 64 bytes]
+
+	//blink_led_on();
 	//timer_sleep(TIMER_FREQUENCY_HZ);
-	USBD_CUSTOM_HID_SendReport(pdev, inbuf, 65); //Функция ставит в очередь передачу данных в PC
+	//USBD_CUSTOM_HID_SendReport(pdev, inbuf, 65); //Функция ставит в очередь передачу данных в PC
 
-	trace_printf("SEND: %s\n", inbuf+1);
 	//DumpData();
-
-	counter++;
+	//counter++;
 }
 
 
